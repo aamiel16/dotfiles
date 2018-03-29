@@ -8,6 +8,9 @@ ZSH_THEME="amuse"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
+# Sourcing aliases
+source ~/.aliases
+
 # Sourcing android studio directory
 export ANDROID_HOME="$HOME/Android/Sdk"
 export TMUX_HOME="$HOME/tmux/bin"
@@ -105,22 +108,3 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias gtpos='cd ~/Desktop/Workspace/Krispsystems/ks-client-register'
-alias gtadmin='cd ~/Desktop/Workspace/Krispsystems/ks-client-admin'
-alias gtworkspace='cd ~/Desktop/Workspace/'
-alias gtsides='cd ~/Desktop/Workspace/Sides/'
-alias gtdux='cd ~/Desktop/Workspace/Dux/'
-alias gtkrisp='cd ~/Desktop/Workspace/Krispsystems'
-alias stpos='gtpos && npm start'
-alias stadmin='gtadmin && npm start'
-alias code='code .'
-alias devpos='gtpos && code && stpos'
-alias codepos='gtpos && code'
-alias devadmin='gtadmin && code && stadmin'
-alias codeadmin='gtadmin && code'
-alias editvim='sudo nvim ~/.config/nvim/init.vim'
-alias editzsh='sudo nvim ~/.zshrc'
-alias gitkrisp='git config --global user.email "apsanchez@krispsystems.com"'
-alias gitdux='git config --global user.email "duxapps@gmail.com"'
-alias explore='nautilus .'
-alias rra='react-native run-android'
