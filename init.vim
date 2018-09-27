@@ -14,7 +14,6 @@ let g:python3_host_prog = '/usr/local/bin/python3'
 syntax on
 set complete-=i
 set lazyredraw
-set shell=zsh
 set nobackup
 set nowritebackup
 set noswapfile
@@ -39,6 +38,7 @@ set cursorline
 set splitbelow
 set splitright
 set previewheight=1
+set signcolumn=yes
 
 " Search options
 set ignorecase
@@ -60,9 +60,16 @@ set copyindent
 set smartindent
 
 " Scroll options
-set scrolloff=3
+set scrolloff=5
 set sidescrolloff=5
 set sidescroll=1
+
+" Wrap options
+"set wrap
+set linebreak
+set breakindent
+set breakindentopt=sbr
+set showbreak=↪
 
 
 " ------------------------------
@@ -82,6 +89,7 @@ Plug 'othree/yajs.vim', { 'for': 'javascript' }
 Plug 'othree/es.next.syntax.vim'
 Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'HerringtonDarkholme/yats.vim'
+Plug 'ekalinin/Dockerfile.vim'
 
 " Javascript Plugins
 Plug 'pangloss/vim-javascript'
@@ -97,6 +105,8 @@ Plug 'rudism/deoplete-tsuquyomi'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'KeitaNakamura/neodark.vim'
+Plug 'ayu-theme/ayu-vim'
+Plug 'mhartington/oceanic-next'
 
 " File Plugins
 Plug 'scrooloose/nerdtree'
@@ -109,6 +119,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'scrooloose/nerdcommenter'
 Plug 'Yggdroot/indentLine'
+Plug 'jiangmiao/auto-pairs'
 
 call plug#end()
 
@@ -121,6 +132,8 @@ call plug#end()
 set runtimepath+=~/.config/nvim/deoplete.nvim/
 set completeopt=longest,menuone,preview,noinsert
 let g:deoplete#enable_at_startup = 1
+let g:deoplete#file#enable_buffer_path = 1
+call deoplete#custom#option('refresh_always', v:false)
 autocmd InsertLeave * silent! pclose!
 
 " Javascript
@@ -129,6 +142,7 @@ let g:tern_request_timeout = 6000
 let g:tern#command = ["tern"]
 
 " Typescript
+let g:tsuquyomi_disable_default_mappings = 1
 let g:tsuquyomi_javascript_support = 1
 let g:tsuquyomi_auto_open = 1
 let g:tsuquyomi_disable_quickfix = 1
@@ -138,7 +152,7 @@ let NERDTreeShowHidden = 1
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 let g:NERDTreeWinSize = 30
-autocmd StdinReadPre * let s:std_in=1
+autocmd StdinReadPre * let s:std_in = 1
 
 " Nerdcommenter
 let g:NERDSpaceDelims = 2
@@ -147,6 +161,7 @@ let g:NERDSpaceDelims = 2
 let g:indentLine_char = '│'
 let g:indentLine_setColors = 0
 let g:indentLine_concealcursor = ""
+let g:vim_json_syntax_conceal = 0
 
 " Syntax
 let g:jsx_ext_required = 0
@@ -187,7 +202,10 @@ let g:ack_apply_lmappings = 0
 " ------------------------------
 
 " Colorscheme
-colorscheme neodark
+"let ayucolor="dark"
+"colorscheme ayu
+"colorscheme neodark
+colorscheme OceanicNext
 
 " Airline
 let g:airline_theme = "neodark"
@@ -202,7 +220,7 @@ let g:airline_highlighting_cache = 1
 
 
 " ------------------------------
-" Keyboard shortcuts
+" Keyboard mapping
 " ------------------------------
 
 " Nerdtree toggle
@@ -215,16 +233,22 @@ endfunction
 nnoremap <silent> <expr> <C-t> (IsNerdTreeEnabled()) ? ':NERDTreeToggle<CR>': (HasBuffer()) ? ':NERDTreeFind<CR>' : ':NERDTreeToggle<CR>'
 
 " Auto complete
-inoremap <silent><expr> <CR> pumvisible() ? "\<C-Y>" : "\<CR>"
-inoremap <silent><expr> <Esc> pumvisible() ? "<C-e>" : "<Esc>"
-inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-inoremap <expr><S-tab> pumvisible() ? "\<c-p>" : "\<tab>"
-imap <expr><C-Space> deoplete#refresh()
+inoremap <silent> <expr> <CR> pumvisible() ? "\<C-Y>" : "\<CR>"
+inoremap <silent> <expr> <Esc> pumvisible() ? "<C-e>" : "<Esc>"
+inoremap <expr> <Tab> pumvisible() ? "\<c-n>" : "\<tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<c-p>" : "\<tab>"
+imap <expr> <C-Space> deoplete#refresh()
+
+" Tsuquyomi navigation
+nmap <C-]> <Plug>(TsuquyomiDefinition)
+nmap <C-W>] <Plug>(TsuquyomiSplitDefinition)
+nmap <C-W><C-]> <Plug>(TsuquyomiSplitDefinition)
+nmap <C-^> <Plug>(TsuquyomiReferences)
 
 " Split screen
-nnoremap <silent><C-\> :vs <CR>
-inoremap <silent><C-\> :vs <CR>
-vnoremap <silent><C-\> :vs <CR>
+nnoremap <silent> <C-\> :vs <CR>
+inoremap <silent> <C-\> :vs <CR>
+vnoremap <silent> <C-\> :vs <CR>
 
 " Saving files
 noremap <silent> <C-S> :update<CR>
@@ -237,34 +261,21 @@ nnoremap <silent> <Leader>f :bn<CR>
 nnoremap <silent> <Leader>g :e#<CR>
 nnoremap <silent> <Leader>q :bd<CR>
 
-" Mode keymaps
+" Mode switch
 nmap <Space> i
 inoremap jj <Esc>
 inoremap jk <Esc>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+" Arrow keys are for noobs
+nnoremap <Up> <Nop>
+nnoremap <Down> <Nop>
+nnoremap <Left> <Nop>
+nnoremap <Right> <Nop>
+inoremap <Up> <Nop>
+inoremap <Down> <Nop>
+inoremap <Left> <Nop>
+inoremap <Right> <Nop>
+vnoremap <Up> <Nop>
+vnoremap <Down> <Nop>
+vnoremap <Left> <Nop>
+vnoremap <Right> <Nop>
