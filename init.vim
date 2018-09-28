@@ -1,13 +1,17 @@
+" //
+" // ─── VIM PLUG ───────────────────────────────────────────────────────────────────
+" //
+
 if empty(glob('~/.config/nvim/autoload/plug.vim'))
   silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall
 endif
 
 
-" ------------------------------
-" General Config
-" ------------------------------
+" //
+" // ─── GENERAL CONFIG ─────────────────────────────────────────────────────────────
+" //
+
 let g:python3_host_prog = '/usr/local/bin/python3'
 
 " Performance options
@@ -65,16 +69,16 @@ set sidescrolloff=5
 set sidescroll=1
 
 " Wrap options
-"set wrap
 set linebreak
 set breakindent
 set breakindentopt=sbr
 set showbreak=↪
 
 
-" ------------------------------
-" Plugins
-" ------------------------------
+" //
+" // ─── PLUGINS ────────────────────────────────────────────────────────────────────
+" //
+
 call plug#begin('~/.local/share/nvim/plugged')
 
 " Autocomplete Plugins
@@ -124,17 +128,19 @@ Plug 'jiangmiao/auto-pairs'
 call plug#end()
 
 
-" ------------------------------
-" Plugin Config
-" ------------------------------
+" //
+" // ─── PLUGINS CONFIG ─────────────────────────────────────────────────────────────
+" //
 
 " Deoplete
 set runtimepath+=~/.config/nvim/deoplete.nvim/
 set completeopt=longest,menuone,preview,noinsert
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#file#enable_buffer_path = 1
-call deoplete#custom#option('refresh_always', v:false)
 autocmd InsertLeave * silent! pclose!
+let g:deoplete#enable_at_startup = 1
+call deoplete#custom#option({
+\ 'refresh_always': v:false,
+\ 'auto_complete': v:false
+\ })
 
 " Javascript
 let g:tern_request_timeout = 1
@@ -151,7 +157,7 @@ let g:tsuquyomi_disable_quickfix = 1
 let NERDTreeShowHidden = 1
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
-let g:NERDTreeWinSize = 30
+let g:NERDTreeWinSize = 40
 autocmd StdinReadPre * let s:std_in = 1
 
 " Nerdcommenter
@@ -167,39 +173,37 @@ let g:vim_json_syntax_conceal = 0
 let g:jsx_ext_required = 0
 let g:used_javascript_libs = 'underscore,jquery,react,backbone'
 
+" Ale
+let g:ale_set_highlights = 0
+
 " CTRL P
-let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist)|(\.(swp|ico|git|svn))$'
-
-
-" ------------------------------
-" Search Config
-" ------------------------------
-
-" Silver searcher
-if executable('ag')
-  " Use ag over grep
-  set grepprg=ag\ --nogroup\ --nocolor
-
-  " Use ag in ack
-  let g:ackprg = 'ag --vimgrep'
-
-  " Use ag in CtrlP for listing files. Lightning fast and respects
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-
-  " ag is fast enough that CtrlP doesn't need to cache
-  let g:ctrlp_use_caching = 0
-endif
-command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist)|(\.(swp|ico|git|svn|d\.ts))$'
+let g:ctrlp_max_files = 0
+let g:ctrlp_max_depth = 100
+let g:ctrlp_working_path_mode = 0
 
 " Ack
 cnoreabbrev Ack Ack!
 let g:ack_apply_qmappings = 0
 let g:ack_apply_lmappings = 0
 
+" Silver searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+  " Use ag in ack
+  let g:ackprg = 'ag --vimgrep'
+  " Use ag in CtrlP for listing files. Lightning fast and respects
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
+command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 
-" ------------------------------
-" Theme Config
-" ------------------------------
+
+"  //
+"  // ─── THEME CONFIG ───────────────────────────────────────────────────────────────
+"  //
 
 " Colorscheme
 "let ayucolor="dark"
@@ -219,9 +223,9 @@ let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 let g:airline_highlighting_cache = 1
 
 
-" ------------------------------
-" Keyboard mapping
-" ------------------------------
+" //
+" // ─── FUNCTIONS ──────────────────────────────────────────────────────────────────
+" //
 
 " Nerdtree toggle
 function! IsNerdTreeEnabled()
@@ -230,20 +234,43 @@ endfunction
 function! HasBuffer()
   return expand("%:t") != ''
 endfunction
+
+" Comment header
+function CommentHeader(text)
+  let a:div = '─'
+  let a:comment = '//'
+  let a:space = a:text != '' ? ' ' : ''
+  let a:pre = repeat(a:div, 3) . a:space .  toupper(a:text) . a:space
+  let a:post = repeat(a:div, 91 - strlen(a:pre)) 
+
+  :put! = '//'
+  :put! = '// ' . a:pre . a:post
+  :put! = '//'
+endfunction
+
+
+" //
+" // ─── KEYBOARD MAPPING ───────────────────────────────────────────────────────────
+" //
+
+" Nerdtree toggle
 nnoremap <silent> <expr> <C-t> (IsNerdTreeEnabled()) ? ':NERDTreeToggle<CR>': (HasBuffer()) ? ':NERDTreeFind<CR>' : ':NERDTreeToggle<CR>'
+
+" Comment header
+nnoremap <silent> <Leader>y "0dd:call CommentHeader('<C-r>0')<CR>
 
 " Auto complete
 inoremap <silent> <expr> <CR> pumvisible() ? "\<C-Y>" : "\<CR>"
 inoremap <silent> <expr> <Esc> pumvisible() ? "<C-e>" : "<Esc>"
 inoremap <expr> <Tab> pumvisible() ? "\<c-n>" : "\<tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<c-p>" : "\<tab>"
-imap <expr> <C-Space> deoplete#refresh()
+inoremap <silent> <expr> <C-Space> deoplete#mappings#manual_complete()
 
 " Tsuquyomi navigation
-nmap <C-]> <Plug>(TsuquyomiDefinition)
-nmap <C-W>] <Plug>(TsuquyomiSplitDefinition)
-nmap <C-W><C-]> <Plug>(TsuquyomiSplitDefinition)
-nmap <C-^> <Plug>(TsuquyomiReferences)
+nmap <silent> <C-]> <Plug>(TsuquyomiDefinition)
+nmap <silent> <C-W>] <Plug>(TsuquyomiSplitDefinition)
+nmap <silent> <C-W><C-]> <Plug>(TsuquyomiSplitDefinition)
+nmap <silent> <C-^> <Plug>(TsuquyomiReferences)
 
 " Split screen
 nnoremap <silent> <C-\> :vs <CR>
@@ -255,9 +282,17 @@ noremap <silent> <C-S> :update<CR>
 vnoremap <silent> <C-S> <C-C>:update<CR>
 inoremap <silent> <C-S> <C-C>:update<CR>
 
+" Global search
+nnoremap <Leader>f :Ack --smart-case<Space>
+
 " Buffer navigation
-nnoremap <silent> <Leader>b :bp<CR>
-nnoremap <silent> <Leader>f :bn<CR>
+let c = 1
+while c <= 99
+  execute "nnoremap " . c . "gb :" . c . "b\<CR>"
+  let c += 1
+endwhile
+nnoremap <silent> <Leader>p :bp<CR>
+nnoremap <silent> <Leader>n :bn<CR>
 nnoremap <silent> <Leader>g :e#<CR>
 nnoremap <silent> <Leader>q :bd<CR>
 
@@ -279,3 +314,4 @@ vnoremap <Up> <Nop>
 vnoremap <Down> <Nop>
 vnoremap <Left> <Nop>
 vnoremap <Right> <Nop>
+
