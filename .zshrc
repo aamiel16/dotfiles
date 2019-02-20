@@ -1,29 +1,32 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-stty -ixon
+# This loads android sdk
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+export CONFLUENT_HOME="$HOME/Library/Confluent"
+export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_161.jdk/Contents/Home"
+export MAVEN_HOME="/usr/share/apache-maven-3.5.4"
+export CPPFLAGS=-I/usr/local/opt/openssl/include
+export LDFLAGS=-L/usr/local/opt/openssl/lib
 
-ZSH_THEME="amuse"
-
-# Sourcing nvm directory
+# This loads nvm
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
-# Sourcing aliases
+# If you come from bash you might have to change your $PATH.
+PATH=$HOME/bin:/usr/local/bin:$ANDROID_HOME/platform-tools:$CONFLUENT_HOME/bin:$CONFLUENT_HOME/confluent-hub/bin:$JAVA_HOME:$MAVEN_HOME/bin:/usr/local/opt/openssl/bin:$ANDROID_HOME/emulator:$PATH
+
+# Source aliases
 source ~/.aliases
 
-# Sourcing android studio directory
-export ANDROID_HOME="$HOME/Android/Sdk"
-export TMUX_HOME="$HOME/tmux/bin"
-export PATH=$PATH:$ANDROID_HOME/tools
-export PATH=$PATH:$ANDROID_HOME/platform-tools
-export PATH=$PATH:$TMUX_HOME
-
 # Path to your oh-my-zsh installation.
-export ZSH=/home/adrian/.oh-my-zsh
+export ZSH=/Users/adrian/.oh-my-zsh
+
+# Completion setup
+fpath=(~/.zsh/completion $fpath)
+autoload -Uz compinit && compinit -i # Docker completion
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+ZSH_THEME="amuse"
 
 # Set list of themes to load
 # Setting this variable when ZSH_THEME=random
@@ -108,3 +111,6 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+export PATH="/usr/local/opt/openssl/bin:$PATH"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
