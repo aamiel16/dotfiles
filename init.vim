@@ -7,16 +7,13 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 endif
 
-
 " //
 " // ─── GENERAL CONFIG ─────────────────────────────────────────────────────────────
 " //
 
-let g:python3_host_prog = '/usr/local/bin/python3'
-
 " Performance options
 syntax on
-set complete-=i
+let mapleader=" "
 set lazyredraw
 set nobackup
 set nowritebackup
@@ -29,15 +26,10 @@ set ttimeoutlen=0
 set backspace=2
 set mouse=a
 set laststatus=2
-set nowritebackup
-set noswapfile
 set number
 set relativenumber
 set ruler
-set showcmd
-set noshowmode
 set hidden
-set cursorline
 set splitbelow
 set splitright
 set previewheight=1
@@ -48,14 +40,13 @@ set nowrap
 set ignorecase
 set smartcase
 set incsearch
-set nohlsearch
 
 " Tab options
-set noexpandtab
+set expandtab
 set smarttab
 set tabstop=2
-set softtabstop=0
 set shiftwidth=2
+set softtabstop=0
 set shiftround
 
 " Indent options
@@ -68,12 +59,30 @@ set scrolloff=5
 set sidescrolloff=5
 set sidescroll=1
 
-" Wrap options
-set linebreak
-set breakindent
-set breakindentopt=sbr
-set showbreak=↪
+" Completion options
+filetype plugin on
+set completeopt-=preview
+set shortmess+=c
+set updatetime=300
 
+set wildignore+=*/.git/*                                    " ctrlp - ignore files in git directories
+set wildignore+=*/tags/*                                    " ctrlp - ignore files in tag directories
+set wildignore+=*/tmp/*                                     " ctrlp - ignore files in tmp directories
+set wildignore+=*/target/*                                  " ctrlp - ignore files in target directories
+set wildignore+=*/build/*                                   " ctrlp - ignore gradle build directories
+set wildignore+=*.d.ts                                      " ctrlp - ignore type defn files
+set wildignore+=*.so                                        " ctrlp - ignore .so files
+set wildignore+=*.o                                         " ctrlp - ignore .o files
+set wildignore+=*.class                                     " ctrlp - ignore .class files
+set wildignore+=*.swp                                       " ctrlp - ignore .swp files
+set wildignore+=*.zip                                       " ctrlp - ignore .zip files
+set wildignore+=*.pdf                                       " ctrlp - ignore .pdf files
+set wildignore+=*package-lock.json                          " ctrlp - ignore package-lock files
+set wildignore+=*/node_modules/*                            " ctrlp - ignore node modules
+set wildignore+=*/bower_components/*                        " ctrlp - ignore bower components
+set wildignore+=*/dist/*                                    " ctrlp - ignore grunt build directory
+set clipboard=unnamedplus                                   " use system clipboard
+set shell=/bin/zsh                                          " use zsh
 
 " //
 " // ─── PLUGINS ────────────────────────────────────────────────────────────────────
@@ -82,36 +91,22 @@ set showbreak=↪
 call plug#begin('~/.local/share/nvim/plugged')
 
 " Autocomplete Plugins
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'Shougo/denite.nvim'
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 
 " Syntax Plugins
 Plug 'w0rp/ale'
-Plug 'mxw/vim-jsx'
+Plug 'isRuslan/vim-es6'
 Plug 'elzr/vim-json'
-Plug 'othree/yajs.vim', { 'for': 'javascript' }
-Plug 'othree/es.next.syntax.vim'
-Plug 'othree/javascript-libraries-syntax.vim'
-Plug 'HerringtonDarkholme/yats.vim'
 Plug 'ekalinin/Dockerfile.vim'
-
-" Javascript Plugins
-Plug 'pangloss/vim-javascript'
-Plug 'carlitux/deoplete-ternjs'
-Plug 'ternjs/tern_for_vim', { 'do': 'npm install && npm install -g tern' }
-Plug 'ludovicchabant/vim-gutentags'
-
-"Typescript Plugins
-Plug 'Shougo/vimproc.vim', { 'do': 'make' }
-Plug 'Quramy/tsuquyomi', { 'do': 'npm install -g typescript' }
-Plug 'rudism/deoplete-tsuquyomi'
+Plug 'HerringtonDarkholme/yats.vim'
+Plug 'jparise/vim-graphql'
+Plug 'chr4/nginx.vim'
+Plug 'jiangmiao/auto-pairs'
 
 " Theme Plugins
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'KeitaNakamura/neodark.vim'
-Plug 'ayu-theme/ayu-vim'
-Plug 'mhartington/oceanic-next'
+Plug 'altercation/vim-colors-solarized'
 
 " File Plugins
 Plug 'scrooloose/nerdtree'
@@ -122,164 +117,148 @@ Plug 'mileszs/ack.vim'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
+Plug 'ludovicchabant/vim-gutentags'
 Plug 'scrooloose/nerdcommenter'
 Plug 'Yggdroot/indentLine'
-Plug 'jiangmiao/auto-pairs'
-Plug 'chrisbra/Colorizer'
 Plug 'mattn/emmet-vim'
+Plug 'Valloric/ListToggle'
+
+" Temp
+Plug 'edkolev/tmuxline.vim'
 
 call plug#end()
 
-
 " //
-" // ─── PLUGINS CONFIG ─────────────────────────────────────────────────────────────
+" // ─── NERDTREE ────────────────────────────────────────────────────────────────────────
 " //
 
-" Deoplete
-autocmd InsertLeave * silent! pclose!
-set runtimepath+=~/.config/nvim/deoplete.nvim/
-set completeopt=longest,menuone,preview,noinsert
-let g:deoplete#enable_at_startup = 1
-call deoplete#custom#option({
-\ 'refresh_always': v:false,
-\ 'auto_complete': v:false
-\ })
-
-" Javascript
-autocmd BufEnter *.jsx set filetype=javascript
-let g:tern_request_timeout = 1
-let g:tern_request_timeout = 6000
-let g:tern#command = ["tern"]
-
-" Typescript
-autocmd BufEnter *.tsx set filetype=typescript
-let g:tsuquyomi_auto_open = 1
-let g:tsuquyomi_disable_quickfix = 1
-let g:tsuquyomi_disable_default_mappings = 1
-let g:tsuquyomi_javascript_support = 1
-
-" Nerdtree
-autocmd StdinReadPre * let s:std_in = 1
+let g:NERDTreeWinSize = 30
 let NERDTreeShowHidden = 1
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
-let g:NERDTreeWinSize = 30
+let NERDTreeAutoDeleteBuffer = 1
+let NERDTreeQuitOnOpen = 1
 
-" Nerdcommenter
+" Nerdtree toggle
+let g:isNerdtreeOpen = 0
+function! NerdTreeToggle()
+  if exists('t:NERDTreeBufName') && bufwinnr(t:NERDTreeBufName) != -1
+    if winbufnr(2) == -1
+      exec 'bd'
+    else
+      silent NERDTreeClose
+    endif
+    let g:isNerdtreeOpen = 0
+  else
+    if expand("%:t") != ''
+      silent NERDTreeFind
+    else
+      silent NERDTree
+    endif
+    let g:isNerdtreeOpen = 1
+  endif
+endfunction
+
+
+" //
+" // ─── NERDCOMMENTER ───────────────────────────────────────────────────────────────────
+" //
+
 let g:NERDSpaceDelims = 2
 
-" IndentLine
+" //
+" // ─── INDENTLINE ──────────────────────────────────────────────────────────────────────
+" //
+
 let g:indentLine_char = '│'
-let g:indentLine_setColors = 0
-let g:indentLine_concealcursor = ""
+let g:indentLine_concealcursor = ''
 let g:vim_json_syntax_conceal = 0
 
-" Syntax
-let g:jsx_ext_required = 0
-let g:used_javascript_libs = 'underscore,jquery,react,backbone'
+" //
+" // ─── ALE ─────────────────────────────────────────────────────────────────────────────
+" //
 
-" Ale
 let g:ale_set_highlights = 0
+let g:ale_lint_delay = 500
+let g:ale_cache_executable_check_failures = 1
+let g:ale_virtualenv_dir_names = []
 
-" Colorizer
-let g:colorizer_auto_color = 0
-let g:colorizer_colornames = 0
-"let g:colorizer_colornames_disable = 1
-let g:colorizer_skip_comments = 1
-let g:colorizer_auto_filetype='css,html,typescript,javascript'
 
-" Emmet
-autocmd FileType html,css,typescript,javascript EmmetInstall
-let g:user_emmet_mode='i'
+" //
+" // ─── EMMET ───────────────────────────────────────────────────────────────────────────
+" //
+
+let g:user_emmet_mode = 'i'
 let g:user_emmet_expandabbr_key = '<C-e>'
 let g:user_emmet_install_global = 0
 
-" CTRL P
-let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist)|(\.(swp|ico|git|svn|d\.ts))$'
+" //
+" // ─── COC ─────────────────────────────────────────────────────────────────────────────
+" //
+
+let g:coc_global_extensions = [
+  \ 'coc-tsserver',
+  \ 'coc-prettier', 
+  \ 'coc-eslint', 
+  \ 'coc-json', 
+  \ ]
+
+command! -nargs=0 Prettier :call CocAction('runCommand', 'prettier.formatFile')
+
+" COC show documentation
+function! s:ShowDocumentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" //
+" // ─── CTRLP ───────────────────────────────────────────────────────────────────────────
+" //
+
+if exists("g:ctrlp_user_command")
+  unlet g:ctrlp_user_command
+endif
+
+" let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist)|(\.(swp|ico|git|svn|d\.ts))$'
 let g:ctrlp_max_files = 0
 let g:ctrlp_max_depth = 100
 let g:ctrlp_working_path_mode = 0
+let g:ctrlp_show_hidden = 1
 
-" Gutentags
-function! GutentagsEnableFn(path) abort
-    return fnamemodify(a:path, ':e') != 'typescript'
-endfunction
-let g:gutentags_enabled_user_func = 'GutentagsEnableFn'
+" //
+" // ─── FUGITIVE ────────────────────────────────────────────────────────────────────────
+" //
 
-" Fugitive
 set diffopt+=vertical
 
-" Ack
+" //
+" // ─── ACK & AG ────────────────────────────────────────────────────────────────────────
+" //
+
 cnoreabbrev Ack Ack!
 let g:ack_apply_qmappings = 0
 let g:ack_apply_lmappings = 0
 
 " Silver searcher
 if executable('ag')
-  " Use ag over grep
-  set grepprg=ag\ --nogroup\ --nocolor
-  " Use ag in ack
-  let g:ackprg = 'ag --vimgrep'
-  " Use ag in CtrlP for listing files. Lightning fast and respects
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-  " ag is fast enough that CtrlP doesn't need to cache
-  let g:ctrlp_use_caching = 0
-endif
-command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
-
-" Autoread on file change
-autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
-
-" Notification after file change
-autocmd FileChangedShellPost *
-  \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
-
-"  //
-"  // ─── THEME CONFIG ───────────────────────────────────────────────────────────────
-"  //
-
-" Colorscheme
-"let ayucolor="dark"
-"colorscheme ayu
-"colorscheme neodark
-colorscheme OceanicNext
-
-" Airline
-let g:airline_theme = "neodark"
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#buffer_nr_show = 1
-let g:airline#extensions#whitespace#enabled = 0
-let g:airline#extensions#whitespace#symbol = '!'
-let g:airline#extensions#tabline#fnamemod = ':t'
-let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
-let g:airline_highlighting_cache = 1
-
-" True colors
-if exists('+termguicolors')
-  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-  set termguicolors
+  set grepprg=ag\ --nogroup\ --nocolor " Use ag over grep
+  let g:ackprg = 'ag --vimgrep' " Use ag in ack
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""' " Use ag in CtrlP for listing files. Lightning fast and respects
+  let g:ctrlp_use_caching = 0 " ag is fast enough that CtrlP doesn't need to cache
 endif
 
 " //
-" // ─── FUNCTIONS ──────────────────────────────────────────────────────────────────
+" // ─── COMMENT HEADER ──────────────────────────────────────────────────────────────────
 " //
 
-" Nerdtree toggle
-function! IsNerdTreeEnabled()
-   return exists('t:NERDTreeBufName') && bufwinnr(t:NERDTreeBufName) != -1
-endfunction
-function! HasBuffer()
-  return expand("%:t") != ''
-endfunction
-
-" Comment header
-function CommentHeader(text)
+function! CommentHeader(text)
   let a:div = '─'
   let a:comment = '//'
   let a:space = a:text != '' ? ' ' : ''
-  let a:pre = repeat(a:div, 3) . a:space .  toupper(a:text) . a:space
+  let a:pre = repeat(a:div, 3) . a:space .  trim(toupper(a:text)) . a:space
   let a:post = repeat(a:div, 91 - strlen(a:pre)) 
 
   :put! = '//'
@@ -287,59 +266,43 @@ function CommentHeader(text)
   :put! = '//'
 endfunction
 
-" Terminal
-let s:monkey_terminal_window = -1
-let s:monkey_terminal_buffer = -1
-let s:monkey_terminal_job_id = -1
+" //
+" // ─── THEME ───────────────────────────────────────────────────────────────────────────
+" //
 
-function! MonkeyTerminalOpen(height)
-  " Check if buffer exists, if not create a window and a buffer
-  if !bufexists(s:monkey_terminal_buffer)
-    " Creates a window call monkey_terminal
-    new monkey_terminal
-    " Moves to the window the right the current one
-    wincmd J
-    exec "resize " . a:height
-    let s:monkey_terminal_job_id = termopen($SHELL, { 'detach': 1 })
+colorscheme solarized
+if match(execute("silent !theme-profile"), "light") > 0
+  set background=light
+else
+  set background=dark
+endif
 
-    " Change the name of the buffer to "Terminal 1"
-    silent file Terminal\ 1
-    " Gets the id of the terminal window
-    let s:monkey_terminal_window = win_getid()
-    let s:monkey_terminal_buffer = bufnr('%')
+" Airline
+let g:airline_theme = 'solarized'
+let g:airline_powerline_fonts = 1
+let g:airline_highlighting_cache = 1
+let g:airline_extensions = [ 'ctrlp', 'branch', 'tabline' ]
+let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 
-    " The buffer of the terminal won't appear in the list of the buffers
-    " when calling :buffers command
-    set nobuflisted
+" Solarized theme switch
+function! SolarSwap()
+  let l:profile=execute("silent !theme-profile")
+  if match(l:profile, "light") > 0
+    set background=dark
   else
-    if !win_gotoid(s:monkey_terminal_window)
-      sp
-      " Moves to the window below the current one
-      wincmd J
-      exec "resize " . a:height
-      buffer Terminal\ 1
-      " Gets the id of the terminal window
-      let s:monkey_terminal_window = win_getid()
-    endif
+    set background=light
   endif
+  execute("silent !theme-toggle")
 endfunction
 
-function! MonkeyTerminalClose()
-  if win_gotoid(s:monkey_terminal_window)
-    " close the current window
-    hide
-  endif
-endfunction
+command! ThemeToggle call SolarSwap()
 
-function! MonkeyTerminalToggle(height)
-  if win_gotoid(s:monkey_terminal_window)
-    call MonkeyTerminalClose()
-  else
-    call MonkeyTerminalOpen(a:height)
-  endif
-endfunction
+" //
+" // ─── MAXIMIZE WINDOW ─────────────────────────────────────────────────────────────────
+" //
 
-" Maximizing a split window
 function! MaximizeToggle()
   if exists("s:maximize_session")
     exec "source " . s:maximize_session
@@ -356,69 +319,78 @@ function! MaximizeToggle()
   endif
 endfunction
 
-" Quickfix toggle
-let g:quickfix_is_open = 0
+" //
+" // ─── AUTO COMMANDS ───────────────────────────────────────────────────────────────────
+" //
 
-function! QuickfixToggle()
-    if g:quickfix_is_open
-        cclose
-        let g:quickfix_is_open = 0
-    else
-        copen
-        let g:quickfix_is_open = 1
-    endif
-endfunction
+augroup mAutocmds
+  au!
 
+  au FileType javascript set suffixesadd+=.js,.jsx
+  au FileType typescript set suffixesadd+=.ts,.tsx
+
+  au InsertLeave * if pumvisible() == 0|pclose|endif
+  au CursorMovedI * if pumvisible() == 0|pclose|endif
+  au StdinReadPre * let s:std_in = 1 " Nerdtree
+  au FileType * let g:AutoPairs["<"] = ">" " Autopairs
+  au FileType qf setlocal wrap " Ale error
+  au FileType html,css,typescript,javascript,typescript.tsx,javascript.tsx EmmetInstall " Emmet
+  au User CocJumpPlaceholder call CocActionAsync('showSignatureHelp') " Update signature help on jump placeholder 
+augroup END
 
 " //
 " // ─── KEYBOARD MAPPING ───────────────────────────────────────────────────────────
 " //
 
 " Nerdtree toggle
-nnoremap <silent> <expr> <C-t> (IsNerdTreeEnabled()) ? ':NERDTreeToggle<CR>': (HasBuffer()) ? ':NERDTreeFind<CR>' : ':NERDTreeToggle<CR>'
+nnoremap <silent> <C-t> :call NerdTreeToggle()<CR>
 
 " Comment header
 nnoremap <silent> <Leader>y "0dd:call CommentHeader('<C-r>0')<CR>
 
-" Terminal
-nnoremap <silent> <Leader>` :call MonkeyTerminalToggle(9)<cr>
-tnoremap <silent> <Leader>` <C-\><C-n>:call MonkeyTerminalToggle(9)<cr>
+" Prettier
+nnoremap <silent> <Leader>r :Prettier<CR>
 
-" Quickfix toggle
-nnoremap <silent> <C-q> :call QuickfixToggle()<cr>
+" CtrlP
+nnoremap <silent> <C-b> :CtrlPBuffer<CR>
+
+" Ale error navigation
+nmap <silent> <Leader>a <Plug>(ale_previous_wrap)
+nmap <silent> <Leader>s <Plug>(ale_next_wrap)
 
 " Auto complete
-inoremap <silent> <expr> <CR> pumvisible() ? "\<C-Y>" : "\<CR>"
-inoremap <silent> <expr> <Esc> pumvisible() ? "<C-e>" : "<Esc>"
-inoremap <expr> <Tab> pumvisible() ? "\<c-n>" : "\<tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<c-p>" : "\<tab>"
-inoremap <silent> <expr> <C-Space> deoplete#mappings#manual_complete()
+inoremap <silent><expr> <CR> pumvisible() ? "\<C-Y>" : "\<C-g>u\<CR>"
+inoremap <silent><expr> <Esc> pumvisible() ? "<C-E>" : "<Esc>"
+inoremap <silent><expr> <Tab> pumvisible() ? "\<C-N>" : "\<tab>"
+inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-P>" : "\<S-tab>"
+inoremap <silent><expr> <C-Space> coc#refresh()
 
-" Tsuquyomi navigation
-autocmd FileType typescript nmap <silent> <C-]> <Plug>(TsuquyomiDefinition)
-autocmd FileType typescript nmap <silent> <C-W>] <Plug>(TsuquyomiSplitDefinition)
-autocmd FileType typescript nmap <silent> <C-W><C-]> <Plug>(TsuquyomiSplitDefinition)
-autocmd FileType typescript nmap <silent> <C-^> <Plug>(TsuquyomiReferences)
+" Coc
+nmap <silent> <C-]> <Plug>(coc-definition)
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <silent> <leader>rn <Plug>(coc-rename)
+nnoremap <silent> K :call <SID>ShowDocumentation()<CR>
 
-" Split screen
-nnoremap <silent> <C-\> :vs <CR>
-inoremap <silent> <C-\> :vs <CR>
-vnoremap <silent> <C-\> :vs <CR>
-nnoremap <silent> <C-W>O :call MaximizeToggle()<CR>
-nnoremap <silent> <C-W>o :call MaximizeToggle()<CR>
-nnoremap <silent> <C-W><C-O> :call MaximizeToggle()<CR>
+" Commenter
+nmap <silent> <Leader>/ <plug>NERDCommenterToggle
+vmap <silent> <Leader>/ <plug>NERDCommenterToggle
 
-" Saving files
-noremap <silent> <C-S> :update<CR>
-vnoremap <silent> <C-S> <C-C>:update<CR>
-inoremap <silent> <C-S> <C-C>:update<CR>
+" Buffer manipulation
+noremap <silent> <C-Q> :bd<CR>
+noremap <silent> <C-W>q :bd<CR>
+noremap <silent> <C-W>qq :bd!<CR>
+noremap <silent> <C-W>\ :vs <CR><C-W>h
+noremap <silent> <C-W>- :sp <CR><C-W>k
+nnoremap <C-W>o :call MaximizeToggle()<CR>
 
-" Global search
-nnoremap <Leader>f :Ack --smart-case<Space>
-
-" Copy / Paste from clipboard
-vnoremap <silent> <Leader>y "+y
-nnoremap <silent> <Leader>p "+p
+" Split navigation
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
 
 " Buffer navigation
 let c = 1
@@ -429,26 +401,42 @@ endwhile
 nnoremap <silent> <Leader>[ :bp<CR>
 nnoremap <silent> <Leader>] :bn<CR>
 nnoremap <silent> <Leader>g :e#<CR>
-nnoremap <silent> <Leader>q :bd<CR>
-nnoremap <silent> <Leader>qq :bd!<CR>
+
+" Tab navigation
+noremap <silent> <C-T>q :tabclose<CR>
+noremap <silent> <Leader>{ :tabp<CR>
+noremap <silent> <Leader>} :tabn<CR>
+
+" Saving files
+nnoremap <silent> <C-S> :update<CR>
+vnoremap <silent> <C-S> <C-C>:update<CR>
+inoremap <silent> <C-S> <C-C>:update<CR>
+
+" Global search
+nnoremap <Leader>f :Ack! -S -Q ""<Left>
+
+" Copy / Paste from clipboard
+vnoremap <silent> <Leader>y "+y
+nnoremap <silent> <Leader>p "+p
+
+" Wrapped lines goes down/up to next row
+nnoremap j gj
+nnoremap k gk
+
+" Yank till end of line
+noremap <silent> Y y$
 
 " Mode switch
-nmap <Space> i
-inoremap jj <Esc>
-inoremap jk <Esc>
+imap jj <Esc>
+imap jk <Esc>
 
-" Resize
-nnoremap <silent> <Left> :vertical resize -2<CR>
-nnoremap <silent> <Right> :vertical resize +2<CR>
-nnoremap <silent> <Up> :resize +2<CR>
-nnoremap <silent> <Down> :resize -2<CR>
+" Remove highlight on escape
+nnoremap <silent> <ESC> :nohl<CR><ESC>
 
-" Arrow keys are for noobs
-inoremap <Up> <Nop>
-inoremap <Down> <Nop>
-inoremap <Left> <Nop>
-inoremap <Right> <Nop>
-vnoremap <Up> <Nop>
-vnoremap <Down> <Nop>
-vnoremap <Left> <Nop>
-vnoremap <Right> <Nop>
+" NOOPS / Arrow keys?
+map <C-w><C-q> <Nop>
+map Q <Nop>
+map <Up> <Nop>
+map <Down> <Nop>
+map <Left> <Nop>
+map <Right> <Nop>
