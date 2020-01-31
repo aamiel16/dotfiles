@@ -35,6 +35,7 @@ set splitright
 set previewheight=1
 set signcolumn=yes
 set nowrap
+set noshowmode
 
 " Search options
 set ignorecase
@@ -64,6 +65,8 @@ filetype plugin on
 set completeopt-=preview
 set shortmess+=c
 set updatetime=300
+set diffopt+=vertical
+set cmdheight=1
 
 set wildignore+=*/.git/*                                    " ctrlp - ignore files in git directories
 set wildignore+=*/tags/*                                    " ctrlp - ignore files in tag directories
@@ -117,11 +120,11 @@ Plug 'mileszs/ack.vim'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
-Plug 'ludovicchabant/vim-gutentags'
 Plug 'scrooloose/nerdcommenter'
 Plug 'Yggdroot/indentLine'
 Plug 'mattn/emmet-vim'
 Plug 'Valloric/ListToggle'
+Plug 'Shougo/echodoc.vim'
 
 " Temp
 Plug 'edkolev/tmuxline.vim'
@@ -197,6 +200,7 @@ let g:user_emmet_install_global = 0
 " //
 
 let g:coc_global_extensions = [
+  \ 'coc-java',
   \ 'coc-tsserver',
   \ 'coc-prettier', 
   \ 'coc-eslint', 
@@ -232,7 +236,15 @@ let g:ctrlp_show_hidden = 1
 " // ─── FUGITIVE ────────────────────────────────────────────────────────────────────────
 " //
 
-set diffopt+=vertical
+
+" //
+" // ─── ECHODOC ─────────────────────────────────────────────────────────────────────────
+" //
+
+let g:echodoc#enable_at_startup = 1
+let g:echodoc#type = 'floating'
+highlight link EchoDocFloat Pmenu
+
 
 " //
 " // ─── ACK & AG ────────────────────────────────────────────────────────────────────────
@@ -281,10 +293,12 @@ endif
 let g:airline_theme = 'solarized'
 let g:airline_powerline_fonts = 1
 let g:airline_highlighting_cache = 1
-let g:airline_extensions = [ 'ctrlp', 'branch', 'tabline' ]
+let g:airline_extensions = [ 'ctrlp', 'branch', 'tabline', 'coc' ]
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+let airline#extensions#coc#stl_format_err = '%E{[%e(#%fe)]}'
+let airline#extensions#coc#stl_format_warn = '%W{[%w(#%fw)]}'
 
 " Solarized theme switch
 function! SolarSwap()
@@ -334,7 +348,7 @@ augroup mAutocmds
   au StdinReadPre * let s:std_in = 1 " Nerdtree
   au FileType * let g:AutoPairs["<"] = ">" " Autopairs
   au FileType qf setlocal wrap " Ale error
-  au FileType html,css,typescript,javascript,typescript.tsx,javascript.tsx EmmetInstall " Emmet
+  au FileType html,css,javascript,javascript.tsx,typescript,typescriptreact,typescript.tsx, EmmetInstall " Emmet
   au User CocJumpPlaceholder call CocActionAsync('showSignatureHelp') " Update signature help on jump placeholder 
 augroup END
 
@@ -349,7 +363,7 @@ nnoremap <silent> <C-t> :call NerdTreeToggle()<CR>
 nnoremap <silent> <Leader>y "0dd:call CommentHeader('<C-r>0')<CR>
 
 " Prettier
-nnoremap <silent> <Leader>r :Prettier<CR>
+nnoremap <silent> <C-f> :Prettier<CR>
 
 " CtrlP
 nnoremap <silent> <C-b> :CtrlPBuffer<CR>
