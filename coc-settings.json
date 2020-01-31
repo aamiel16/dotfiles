@@ -1,0 +1,7 @@
+{
+  "suggest.autoTrigger": "none",
+  "suggest.echodocSupport": true,
+  "suggest.maxCompleteItemCount": 20,
+  "prettier.eslintIntegration": true,
+  "prettier.tslintIntegration": true,
+}
