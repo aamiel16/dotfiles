@@ -205,6 +205,7 @@ let g:coc_global_extensions = [
   \ 'coc-prettier', 
   \ 'coc-eslint', 
   \ 'coc-json', 
+  \ 'coc-yaml', 
   \ ]
 
 command! -nargs=0 Prettier :call CocAction('runCommand', 'prettier.formatFile')
@@ -267,14 +268,14 @@ endif
 " //
 
 function! CommentHeader(text)
-  let a:div = '─'
-  let a:comment = '//'
-  let a:space = a:text != '' ? ' ' : ''
-  let a:pre = repeat(a:div, 3) . a:space .  trim(toupper(a:text)) . a:space
-  let a:post = repeat(a:div, 91 - strlen(a:pre)) 
+  let s:div = '─'
+  let s:comment = '//'
+  let s:space = a:text != '' ? ' ' : ''
+  let s:pre = repeat(s:div, 3) . s:space .  trim(toupper(a:text)) . s:space
+  let s:post = repeat(s:div, 91 - strlen(s:pre)) 
 
   :put! = '//'
-  :put! = '// ' . a:pre . a:post
+  :put! = '// ' . s:pre . s:post
   :put! = '//'
 endfunction
 
