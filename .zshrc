@@ -1,24 +1,16 @@
-#
-# ─── ZSH CONFIG ──────────────────────────────────────────────────────────────────────
-#
+#zmodload zsh/zprof # profiler
 
-autoload -U promptinit; promptinit
-prompt pure
-plugins=( 																	  # plugins
-	git aws docker docker-compose
-)
-bindkey -v																	 	# vim
-ulimit -n 2048 															 	# os limits
-export LC_ALL=en_US.UTF-8  										# locale
-export CLICOLOR=1 				 										# colors
-export TERM=xterm-256color										# set colors to match iTerm2 Terminal Colors
+# Source Prezto.
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
 
-source /Users/adrian/.oh-my-zsh/oh-my-zsh.sh  # zsh
+# Customize locale, color
+export TERM=xterm-256color
 
 #
-# ─── PATHS ───────────────────────────────────────────────────────────────────────────
+# Setup PATH
 #
-
 # Java
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home
 
@@ -43,18 +35,32 @@ export PATH=$PATH:$HOME/.config/yarn/global/node_modules/.bin
 export YVM_DIR=/usr/local/opt/yvm
 [ -r $YVM_DIR/yvm.sh ] && . $YVM_DIR/yvm.sh
 
-# NVM
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-
 # Bin
 export PATH=$PATH:/usr/local/bin
 
-#
-# ─── SOURCE ──────────────────────────────────────────────────────────────────────────
-#
+# Lazy load nvm
+declare -a NODE_GLOBALS=(`find ~/.nvm/versions/node -maxdepth 3 -type l -wholename '*/bin/*' | xargs -n1 basename | sort | uniq`)
+NODE_GLOBALS+=("node")
+NODE_GLOBALS+=("nvm")
 
-[ -f ~/.aliases ] && source ~/.aliases
-[ -f ~/.zshenv ] && source ~/.zshenv
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+load_nvm () {
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+}
+
+for cmd in "${NODE_GLOBALS[@]}"; do
+  eval "${cmd}(){ unset -f ${NODE_GLOBALS}; load_nvm; ${cmd} \$@ }"
+done
+
+#
+# Completion
+#
+autoload bashcompinit && bashcompinit
+complete -C '/usr/local/bin/aws_completer' aws
+
+#
+# Source aliases
+#
+[[ ! -f ~/.aliases ]] || source ~/.aliases
+
+#zprof

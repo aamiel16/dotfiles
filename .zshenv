@@ -1,18 +1,11 @@
-function theme-profile {
-    local PROFILE=$(tmux showenv -g ITERM_PROFILE | awk -F'=' '{print $2}')
-    echo $PROFILE
-}
+#
+# Defines environment variables.
+#
+# Authors:
+#   Sorin Ionescu <sorin.ionescu@gmail.com>
+#
 
-function theme-toggle {
- local PROFILE=$(tmux showenv -g ITERM_PROFILE | awk -F'=' '{print $2}')
- echo $PROFILE
- if [[ $PROFILE == *"light"* ]]; then
-    tmux setenv -g ITERM_PROFILE dark
-    tmux source ~/.tmux/plugins/tmux-colors-solarized/tmuxcolors-dark.conf
-    osascript -e 'tell app "System Events" to keystroke "t" using {option down, control down}'
- else
-    tmux setenv -g ITERM_PROFILE light
-    tmux source ~/.tmux/plugins/tmux-colors-solarized/tmuxcolors-light.conf
-    osascript -e 'tell app "System Events" to keystroke "t" using {shift down, option down, control down}'
- fi
-}
+# Ensure that a non-login, non-interactive shell has a defined environment.
+if [[ ( "$SHLVL" -eq 1 && ! -o LOGIN ) && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprofile"
+fi

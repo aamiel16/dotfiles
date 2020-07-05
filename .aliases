@@ -2,21 +2,17 @@ alias gtwork='cd ~/Desktop/workspace/'
 alias gtproj='gtwork && cd projects'
 alias gtmpos='gtproj && cd mpos'
 alias gtdoc='gtmpos && cd doctors-web'
-alias gtapp='gtwork && cd app'
-alias gtkrisp='gtwork && cd krispsystems'
 
 alias editvim='nvim ~/.config/nvim/init.vim'
 alias editzsh='sudo nvim ~/.zshrc'
 alias editalias='sudo nvim ~/.aliases'
 
-alias git-config-krisp='git config user.email apsanchez@krispsystems.com && git config user.name "Adrian Sanchez"'
 alias git-config-coding='git config user.email codingchancez@gmail.com && git config user.name "Coding Chancez"'
-alias git-commit-amend-author='git commit --amend --reset-author'
 
-alias git-access-krisp='ssh-add -D && ssh-add ~/.ssh/bitbucket-krisp'
-alias git-access-coding='ssh-add -D && ssh-add ~/.ssh/bitbucket-coding'
-alias git-access-github='ssh-add -D && ssh-add ~/.ssh/github-aamiel'
-alias git-access-aws='ssh-add -D && ssh-add ~/.ssh/codecommit-architech'
+alias git-bb-coding='ssh-add -D && ssh-add ~/.ssh/bitbucket-coding'
+alias git-gh-aamiel='ssh-add -D && ssh-add ~/.ssh/github-aamiel'
+alias git-cc-potech='ssh-add -D && ssh-add ~/.ssh/rsa_codecommit_potech'
+alias git-cc-architech='ssh-add -D && ssh-add ~/.ssh/codecommit-architech'
 
 alias rra='react-native run-android'
 alias emulator='$ANDROID_HOME/emulator/emulator'
@@ -26,7 +22,6 @@ alias emutablet='emulator @10.1_WXGA_Tablet_Oreo'
 alias stsimulator='open /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app'
 
 alias k='kubectl'
-alias code='code .'
 
 alias docker-login-mpos='cat ~/Desktop/workspace/projects/mpos/keys/gcp/mpos-249109-3c75776515ec.json | docker login -u _json_key --password-stdin gcr.io'
 
