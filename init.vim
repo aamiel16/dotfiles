@@ -105,11 +105,14 @@ Plug 'HerringtonDarkholme/yats.vim'
 Plug 'jparise/vim-graphql'
 Plug 'chr4/nginx.vim'
 Plug 'jiangmiao/auto-pairs'
+Plug 'hashivim/vim-terraform'
 
 " Theme Plugins
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'altercation/vim-colors-solarized'
+Plug 'morhetz/gruvbox'
+Plug 'mhartington/oceanic-next'
 
 " File Plugins
 Plug 'scrooloose/nerdtree'
@@ -232,6 +235,7 @@ let g:ctrlp_max_files = 0
 let g:ctrlp_max_depth = 100
 let g:ctrlp_working_path_mode = 0
 let g:ctrlp_show_hidden = 1
+let g:ctrlp_dotfiles = 1
 
 " //
 " // ─── FUGITIVE ────────────────────────────────────────────────────────────────────────
@@ -245,6 +249,13 @@ let g:ctrlp_show_hidden = 1
 let g:echodoc#enable_at_startup = 1
 let g:echodoc#type = 'floating'
 highlight link EchoDocFloat Pmenu
+
+" //
+" // ─── TERRAFORM ───────────────────────────────────────────────────────────────────────
+" //
+
+let g:terraform_align=1
+let g:terraform_fmt_on_save=1
 
 
 " //
@@ -283,15 +294,13 @@ endfunction
 " // ─── THEME ───────────────────────────────────────────────────────────────────────────
 " //
 
-colorscheme solarized
-if match(execute("silent !theme-profile"), "light") > 0
-  set background=light
-else
-  set background=dark
-endif
+" colorscheme solarized
+" colorscheme gruvbox
+colorscheme OceanicNext
+set termguicolors
 
 " Airline
-let g:airline_theme = 'solarized'
+let g:airline_theme = 'oceanicnext'
 let g:airline_powerline_fonts = 1
 let g:airline_highlighting_cache = 1
 let g:airline_extensions = [ 'ctrlp', 'branch', 'tabline', 'coc' ]
@@ -300,19 +309,6 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 let airline#extensions#coc#stl_format_err = '%E{[%e(#%fe)]}'
 let airline#extensions#coc#stl_format_warn = '%W{[%w(#%fw)]}'
-
-" Solarized theme switch
-function! SolarSwap()
-  let l:profile=execute("silent !theme-profile")
-  if match(l:profile, "light") > 0
-    set background=dark
-  else
-    set background=light
-  endif
-  execute("silent !theme-toggle")
-endfunction
-
-command! ThemeToggle call SolarSwap()
 
 " //
 " // ─── MAXIMIZE WINDOW ─────────────────────────────────────────────────────────────────
@@ -348,8 +344,8 @@ augroup mAutocmds
   au CursorMovedI * if pumvisible() == 0|pclose|endif
   au StdinReadPre * let s:std_in = 1 " Nerdtree
   au FileType * let g:AutoPairs["<"] = ">" " Autopairs
-  au FileType qf setlocal wrap " Ale error
-  au FileType html,css,javascript,javascript.tsx,typescript,typescriptreact,typescript.tsx, EmmetInstall " Emmet
+  au FileType qf setlocal nowrap " Ale error
+  au FileType html,css,javascript,javascriptreact,javascript.tsx,typescript,typescriptreact,typescript.tsx, EmmetInstall " Emmet
   au User CocJumpPlaceholder call CocActionAsync('showSignatureHelp') " Update signature help on jump placeholder 
 augroup END
 
