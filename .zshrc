@@ -42,6 +42,7 @@ export PATH=$PATH:/usr/local/bin
 declare -a NODE_GLOBALS=(`find ~/.nvm/versions/node -maxdepth 3 -type l -wholename '*/bin/*' | xargs -n1 basename | sort | uniq`)
 NODE_GLOBALS+=("node")
 NODE_GLOBALS+=("nvm")
+NODE_GLOBALS+=("nvim")
 
 load_nvm () {
   export NVM_DIR="$HOME/.nvm"
