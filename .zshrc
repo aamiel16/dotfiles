@@ -64,3 +64,4 @@ complete -C '/usr/local/bin/aws_completer' aws
 [[ ! -f ~/.aliases ]] || source ~/.aliases
 
 #zprof
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
