@@ -51,6 +51,18 @@ install_libraries() {
   fi
 }
 
+install_customizations() {
+  echop "Install MacOS customizations"
+  echop "Proceed? (y/n)"
+  read resp
+  if [ "$resp" = 'y' -o "$resp" = 'Y' ] ; then
+    sh .macos
+    echop "Done!"
+  else
+    echop "Cancelled MacOS customizations installation..."
+  fi
+}
+
 if [ $( echo "$OSTYPE" | grep 'darwin' ) ] ; then
   echop "Detected macOS"
   install_brew
