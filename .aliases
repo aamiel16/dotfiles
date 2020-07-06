@@ -8,10 +8,10 @@ alias editalias='sudo nvim ~/.aliases'
 
 alias git-config-coding='git config user.email codingchancez@gmail.com && git config user.name "Coding Chancez"'
 
-alias git-access-bb-coding='ssh-add -D && ssh-add ~/.ssh/bitbucket-coding'
-alias git-access-gh-aamiel='ssh-add -D && ssh-add ~/.ssh/github-aamiel'
-alias git-access-cc-potech='ssh-add -D && ssh-add ~/.ssh/rsa_codecommit_potech'
-alias git-access-cc-architech='ssh-add -D && ssh-add ~/.ssh/codecommit-architech'
+alias git-access-bb-coding='ssh-add -D && ssh-add ~/.ssh/rsa_bb_coding'
+alias git-access-gh-aamiel='ssh-add -D && ssh-add ~/.ssh/rsa_gh_aamiel16'
+alias git-access-cc-potech='ssh-add -D && ssh-add ~/.ssh/rsa_cc_potech'
+alias git-access-cc-architech='ssh-add -D && ssh-add ~/.ssh/rsa_cc_architech'
 
 alias rra='react-native run-android'
 alias emulator='$ANDROID_HOME/emulator/emulator'
