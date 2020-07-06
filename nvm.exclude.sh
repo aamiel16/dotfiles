@@ -1,18 +1,26 @@
 #!/usr/bin/env bash
 
-PROMPT='[ nvm ]'
+PROMPT='[ NODE VERSION MANAGER ]'
 
-echo_with_prompt () {
+echop () {
   echo "$PROMPT $@"
 }
 
-echo_with_prompt "Initializing Node Version Manager"
-# Install nvm if it is not installed
-which nvm 1>&/dev/null
-if [ ! "$?" -eq 0 ] ; then
-	echo "Node Version Manager (NVM) not installed. Attempting to install NVM"
-	/usr/bin/ruby -e "$(curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh)"
-	if [ ! "$?" -eq 0 ] ; then
-		echo "Something went wrong. Exiting..." && exit 1
-	fi
+echop "Bootstrap Node Version Manager (NVM)"
+echop "Proceed? (y/n)"
+read resp
+if [ "$resp" = 'y' -o "$resp" = 'Y' ] ; then
+  echop "Checking if NVM is already installed..."
+  if ! [ which nvm &> /dev/null ] ; then
+    echop "NVM already installed..."
+  else
+    echop "NVM not installed. Attempting to install..."
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+    echop "Installing latest LTS node verion..."
+    . $NVM_DIR/nvm.sh
+    nvm install --lts
+    echop "Done!"
+  fi
+else
+  echop "Cancelled NVM Bootstrap..."
 fi
