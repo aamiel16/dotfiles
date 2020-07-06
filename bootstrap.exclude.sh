@@ -53,9 +53,15 @@ bootstrap_prezto() {
   sh prezto.exclude.sh
 }
 
+bootstrap_cli() {
+  echo "\n--- CLI TOOLS ---"
+  sh cli.exclude.sh
+}
+
 init
 link
 bootstrap_homebrew
 bootstrap_prezto
 bootstrap_nvm
 bootstrap_vim
+bootstrap_cli
