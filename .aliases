@@ -2,9 +2,9 @@ alias gtwork='cd ~/workspace/'
 alias gtdot='cd ~/dotfiles/'
 alias gtproj='gtwork && cd projects'
 
-alias editvim='nvim ~/.config/nvim/init.vim'
-alias editzsh='sudo nvim ~/.zshrc'
-alias editalias='sudo nvim ~/.aliases'
+alias editvim='nvim ~/dotfiles/nvim.exclude/init.vim'
+alias editzsh='nvim ~/dotfiles/.zshrc'
+alias editalias='nvim ~/dotfiles/.aliases'
 
 alias git-config-coding='git config user.email codingchancez@gmail.com && git config user.name "Coding Chancez"'
 
