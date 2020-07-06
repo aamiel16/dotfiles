@@ -23,7 +23,7 @@ link () {
   echop "Proceed? (y/n)"
   read resp
   if [ "$resp" = 'y' -o "$resp" = 'Y' ] ; then
-    for file in $( ls -A | grep -vE '\.exclude*|\.git$|\.gitignore|.*.md' ) ; do
+    for file in $( ls -A | grep -vE '\.exclude*|\.git$|\.gitignore$|.*.md' ) ; do
       ln -sv "$PWD/$file" "$HOME"
     done
     echo "$PROMPT Symlinking complete"
