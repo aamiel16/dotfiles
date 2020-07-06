@@ -1,13 +1,25 @@
 #!/usr/bin/env bash
 
-PROMPT='[ neovim ]'
+PROMPT='[ NEOVIM ]'
 
-echo_with_prompt () {
+echop () {
   echo "$PROMPT $@"
 }
 
-echo_with_prompt "Initializing neovim directory"
-mkdir -p "$PATH_TO_NVIM"
-cp -r ./nvim.exclude/. $PATH_TO_NVIM
+echop "Bootstrap neovim"
+echop "Proceed? (y/n)"
+read resp
+if [ "$resp" = 'y' -o "$resp" = 'Y' ] ; then
+  echop "Initializing neovim..."
+  export PATH_TO_NVIM="$HOME/.config/nvim"
+  export NVIM_REPO_PATH="$PWD/nvim.exclude"
+  mkdir -p "$PATH_TO_NVIM"
+  for file in $(ls -A $NVIM_REPO_PATH | grep -vE '\.exclude*|\.git$|\.gitignore|.*.md' ) ; do
+    ln -sv "$NVIM_REPO_PATH/$file" "$PATH_TO_NVIM"
+  done
 
-echo_with_prompt "Done!"
+  echop "Done!"
+else
+  echop "Cancelled neovim bootstrap..."
+fi
+

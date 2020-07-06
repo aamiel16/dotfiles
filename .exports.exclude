@@ -1,5 +1,4 @@
 export PATH_TO_WORKSPACE="$HOME/workspace"
-export PATH_TO_NVIM="$HOME/.config/nvim"
 export PATH_TO_PLAYGROUND="$PATH_TO_WORKSPACE/playground"
 export PATH_TO_PROJECTS="$PATH_TO_WORKSPACE/projects"
 export TEXT_EDITOR="nvim"

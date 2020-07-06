@@ -118,6 +118,7 @@ Plug 'mhartington/oceanic-next'
 Plug 'scrooloose/nerdtree'
 Plug 'kien/ctrlp.vim'
 Plug 'mileszs/ack.vim'
+Plug 'numkil/ag.nvim'
 
 " Misc Plugins
 Plug 'tpope/vim-sleuth'
