@@ -18,6 +18,9 @@ if [ "$resp" = 'y' -o "$resp" = 'Y' ] ; then
     ln -sv "$NVIM_REPO_PATH/$file" "$PATH_TO_NVIM"
   done
 
+  echop "Initializing tmux..."
+  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
   echop "Done!"
 else
   echop "Cancelled neovim bootstrap..."

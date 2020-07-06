@@ -68,7 +68,8 @@ set updatetime=300
 set diffopt+=vertical
 set cmdheight=1
 
-set wildignore+=*/.git/*                                    " ctrlp - ignore files in git directories
+set wildignore+=.git                                        " ctrlp - ignore files in git directories
+set wildignore+=.git/*                                      " ctrlp - ignore files in git directories
 set wildignore+=*/tags/*                                    " ctrlp - ignore files in tag directories
 set wildignore+=*/tmp/*                                     " ctrlp - ignore files in tmp directories
 set wildignore+=*/target/*                                  " ctrlp - ignore files in target directories
@@ -270,8 +271,9 @@ let g:ack_apply_lmappings = 0
 " Silver searcher
 if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor " Use ag over grep
-  let g:ackprg = 'ag --vimgrep' " Use ag in ack
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""' " Use ag in CtrlP for listing files. Lightning fast and respects
+  let g:ackprg = 'ag --vimgrep --nogroup --nocolor --column' " Use ag in ack
+  let g:ag_working_path_mode="r"
+  let g:ctrlp_user_command = 'ag %s -l --hidden --nocolor -g ""'
   let g:ctrlp_use_caching = 0 " ag is fast enough that CtrlP doesn't need to cache
 endif
 
