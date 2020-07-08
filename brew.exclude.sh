@@ -43,7 +43,10 @@ install_libraries() {
       brew install neovim
       brew install ack
       brew install the_silver_searcher
+      brew cask install java
+      brew cask install skype
       brew cask install docker
+
       echop "Done!"
     fi
   else
