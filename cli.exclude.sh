@@ -34,6 +34,7 @@ install_python() {
     else
       echop "Installing Python libraries..."
       pip3 install pynvim
+      pip3 install localstack
       echop "Done!"
     fi
   else
