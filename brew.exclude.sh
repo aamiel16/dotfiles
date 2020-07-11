@@ -48,6 +48,7 @@ install_libraries() {
       brew cask install skype
       brew cask install google-chrome
       brew cask install docker
+      brew cask install iglance
 
       echop "Done!"
     fi
