@@ -44,6 +44,7 @@ install_libraries() {
       brew install ack
       brew install the_silver_searcher
       brew install minikube
+      brew install helm
       brew cask install java
       brew cask install skype
       brew cask install google-chrome
