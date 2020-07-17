@@ -43,6 +43,7 @@ install_libraries() {
       brew install neovim
       brew install ack
       brew install the_silver_searcher
+      brew install jq
       brew install minikube
       brew install helm
       brew cask install java
@@ -50,7 +51,8 @@ install_libraries() {
       brew cask install google-chrome
       brew cask install docker
       brew cask install iglance
-
+      brew tap aws/tap
+      brew install aws-sam-cli
       echop "Done!"
     fi
   else
