@@ -205,6 +205,7 @@ let g:user_emmet_install_global = 0
 " //
 
 let g:coc_global_extensions = [
+  \ 'coc-go',
   \ 'coc-java',
   \ 'coc-tsserver',
   \ 'coc-prettier', 
