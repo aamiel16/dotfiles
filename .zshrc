@@ -35,6 +35,9 @@ export PATH=$PATH:$HOME/.config/yarn/global/node_modules/.bin
 export YVM_DIR=/usr/local/opt/yvm
 [ -r $YVM_DIR/yvm.sh ] && . $YVM_DIR/yvm.sh
 
+# Go
+export GOBIN=$HOME/go/bin
+
 # Bin
 export PATH=$PATH:/usr/local/bin
 

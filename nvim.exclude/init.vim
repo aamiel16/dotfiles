@@ -96,6 +96,7 @@ call plug#begin('~/.config/nvim/plugged')
 
 " Autocomplete Plugins
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+Plug 'fatih/vim-go'
 
 " Syntax Plugins
 Plug 'w0rp/ale'
@@ -191,6 +192,11 @@ let g:ale_lint_delay = 500
 let g:ale_cache_executable_check_failures = 1
 let g:ale_virtualenv_dir_names = []
 
+" //
+" // ─── VIM GO ──────────────────────────────────────────────────────────────────────────
+" //
+
+let g:go_def_mapping_enabled = 0
 
 " //
 " // ─── EMMET ───────────────────────────────────────────────────────────────────────────
@@ -347,9 +353,9 @@ augroup mAutocmds
   au InsertLeave * if pumvisible() == 0|pclose|endif
   au CursorMovedI * if pumvisible() == 0|pclose|endif
   au StdinReadPre * let s:std_in = 1 " Nerdtree
-  au FileType * let g:AutoPairs["<"] = ">" " Autopairs
+  au FileType html,css,javascriptreact,javascript.tsx,typescriptreact,typescript.tsx let g:AutoPairs["<"] = ">" " Autopairs
   au FileType qf setlocal nowrap " Ale error
-  au FileType html,css,javascript,javascriptreact,javascript.tsx,typescript,typescriptreact,typescript.tsx, EmmetInstall " Emmet
+  au FileType html,css,javascript,javascriptreact,javascript.tsx,typescript,typescriptreact,typescript.tsx EmmetInstall " Emmet
   au User CocJumpPlaceholder call CocActionAsync('showSignatureHelp') " Update signature help on jump placeholder 
 augroup END
 

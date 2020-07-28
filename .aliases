@@ -1,6 +1,7 @@
 alias gtwork='cd ~/workspace/'
 alias gtdot='cd ~/dotfiles/'
 alias gtproj='gtwork && cd projects'
+alias gtgo='cd ~/go/src'
 
 alias editvim='nvim ~/dotfiles/nvim.exclude/init.vim'
 alias editzsh='nvim ~/dotfiles/.zshrc'
