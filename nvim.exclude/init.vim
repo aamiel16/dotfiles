@@ -54,6 +54,7 @@ set shiftround
 set autoindent
 set copyindent
 set smartindent
+set foldmethod=indent
 
 " Scroll options
 set scrolloff=5
@@ -352,11 +353,14 @@ augroup mAutocmds
 
   au InsertLeave * if pumvisible() == 0|pclose|endif
   au CursorMovedI * if pumvisible() == 0|pclose|endif
-  au StdinReadPre * let s:std_in = 1 " Nerdtree
-  au FileType html,css,javascriptreact,javascript.tsx,typescriptreact,typescript.tsx let g:AutoPairs["<"] = ">" " Autopairs
-  au FileType qf setlocal nowrap " Ale error
+  au StdinReadPre * let s:std_in = 1                                                                                    " Nerdtree
+  au FileType html,css,javascriptreact,javascript.tsx,typescriptreact,typescript.tsx let g:AutoPairs["<"] = ">"         " Autopairs
+  au FileType qf setlocal nowrap                                                                                        " Ale error
   au FileType html,css,javascript,javascriptreact,javascript.tsx,typescript,typescriptreact,typescript.tsx EmmetInstall " Emmet
-  au User CocJumpPlaceholder call CocActionAsync('showSignatureHelp') " Update signature help on jump placeholder 
+  au User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')                                                   " Update signature help on jump placeholder 
+
+  " Folding
+  au BufRead * normal zR
 augroup END
 
 " //
