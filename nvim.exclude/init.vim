@@ -34,7 +34,7 @@ set splitbelow
 set splitright
 set previewheight=1
 set signcolumn=yes
-set nowrap
+set wrap
 set noshowmode
 
 " Search options
