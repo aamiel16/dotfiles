@@ -16,6 +16,7 @@ install_node() {
     else
       echop "Installing Node libraries..."
       npm install -g serverless
+      npm install -g aws-cdk
       npm install -g neovim
       echop "Done!"
     fi
